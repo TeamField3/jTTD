@@ -185,4 +185,5 @@ public class Input {
     public static void setCursor(boolean enabled) {
         Mouse.setGrabbed(!enabled);
     }
+
 }
