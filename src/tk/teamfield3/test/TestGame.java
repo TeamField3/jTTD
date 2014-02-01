@@ -9,7 +9,7 @@ public class TestGame implements Game {
 
     @Override
     public void init() {
-        camera = new Camera();
+        camera = new TestCamera();
     }
 
     @Override
