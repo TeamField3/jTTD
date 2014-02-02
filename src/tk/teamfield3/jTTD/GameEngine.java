@@ -111,7 +111,6 @@ public class GameEngine implements Runnable {
     }
 
     private void input() {
-        Input.update();
         game.input();
     }
 

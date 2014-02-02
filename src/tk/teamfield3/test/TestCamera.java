@@ -1,10 +1,12 @@
 package tk.teamfield3.test;
 
-import tk.teamfield3.jTTD.Input;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import tk.teamfield3.jTTD.display.Camera;
 import tk.teamfield3.jTTD.display.Window;
 import tk.teamfield3.jTTD.util.TimeUtil;
 import tk.teamfield3.jTTD.util.math.Vector2f;
+import tk.teamfield3.jTTD.util.math.Vector3f;
 
 public class TestCamera extends Camera {
 
@@ -18,28 +20,31 @@ public class TestCamera extends Camera {
         float movAmt = (float) (10 * TimeUtil.getDelta());
 //		float rotAmt = (float)(100 * Time.getDelta());
 
-        if (Input.getKey(Input.KEY_ESCAPE)) {
-            Input.setCursor(true);
+        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
+            Mouse.setGrabbed(false);
             mouseLocked = false;
         }
 
-        if (Input.getMouseDown(0)) {
-            Input.setMousePosition(centerPosition);
-            Input.setCursor(false);
+        if (Mouse.isButtonDown(0)) {
+            Mouse.setGrabbed(true);
             mouseLocked = true;
         }
 
-        if (Input.getKey(Input.KEY_W))
+        if (Keyboard.isKeyDown(Keyboard.KEY_W))
             move(getForward(), movAmt);
-        if (Input.getKey(Input.KEY_S))
+        if (Keyboard.isKeyDown(Keyboard.KEY_S))
             move(getForward(), -movAmt);
-        if (Input.getKey(Input.KEY_A))
+        if (Keyboard.isKeyDown(Keyboard.KEY_A))
             move(getLeft(), movAmt);
-        if (Input.getKey(Input.KEY_D))
+        if (Keyboard.isKeyDown(Keyboard.KEY_D))
             move(getRight(), movAmt);
+        if (Keyboard.isKeyDown(Keyboard.KEY_SPACE))
+            move(new Vector3f(0, 1, 0), movAmt); // getUp() is relative
+        if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+            move(new Vector3f(0, -1, 0), movAmt);
 
         if (mouseLocked) {
-            Vector2f deltaPos = Input.getMousePosition().subtract(centerPosition);
+            Vector2f deltaPos = new Vector2f(Mouse.getX(), Mouse.getY()).subtract(centerPosition);
 
             boolean rotY = deltaPos.getX() != 0;
             boolean rotX = deltaPos.getY() != 0;
@@ -50,7 +55,7 @@ public class TestCamera extends Camera {
                 rotateX(-deltaPos.getY() * sensitivity);
 
             if (rotY || rotX)
-                Input.setMousePosition(new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2));
+                Mouse.setCursorPosition(Window.getWidth() / 2, Window.getHeight() / 2);
         }
     }
 
