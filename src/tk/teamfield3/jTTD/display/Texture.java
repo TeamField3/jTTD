@@ -4,8 +4,10 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
 
 public class Texture {
 
@@ -35,9 +37,8 @@ public class Texture {
             int id = TextureLoader.getTexture(ext, new FileInputStream(new File("./res/textures/" + fileName))).getTextureID();
 
             return id;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
-            System.exit(1);
         }
 
         return 0;
