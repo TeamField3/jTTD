@@ -80,7 +80,7 @@ public class GameEngine implements Runnable {
                 update();
 
                 if (frameCounter >= TimeUtil.SECOND) {
-                    System.out.println("FPS:" + frames);
+                    System.out.println("FPS: " + frames);
                     frames = 0;
                     frameCounter = 0;
                 }
