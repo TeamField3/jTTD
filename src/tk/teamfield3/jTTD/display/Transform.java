@@ -92,4 +92,45 @@ public class Transform {
         Transform.camera = camera;
     }
 
+
+    public static float getzNear() {
+        return zNear;
+    }
+
+    public static void setzNear(float zNear) {
+        Transform.zNear = zNear;
+    }
+
+    public static float getzFar() {
+        return zFar;
+    }
+
+    public static void setzFar(float zFar) {
+        Transform.zFar = zFar;
+    }
+
+    public static float getWidth() {
+        return width;
+    }
+
+    public static void setWidth(float width) {
+        Transform.width = width;
+    }
+
+    public static float getHeight() {
+        return height;
+    }
+
+    public static void setHeight(float height) {
+        Transform.height = height;
+    }
+
+    public static float getFov() {
+        return fov;
+    }
+
+    public static void setFov(float fov) {
+        Transform.fov = fov;
+    }
+
 }

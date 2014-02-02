@@ -55,7 +55,7 @@ public class TestCamera extends Camera {
                 rotateX(-deltaPos.getY() * sensitivity);
 
             if (rotY || rotX)
-                Mouse.setCursorPosition(Window.getWidth() / 2, Window.getHeight() / 2);
+                Mouse.setCursorPosition((int) Window.getWidth() / 2, (int) Window.getHeight() / 2);
         }
     }
 

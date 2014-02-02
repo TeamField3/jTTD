@@ -1,4 +1,4 @@
-package tk.teamfield3.jTTD;
+package tk.teamfield3.jTTD.core;
 
 public interface Game {
 

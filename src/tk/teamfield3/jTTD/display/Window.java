@@ -6,48 +6,98 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
+import java.awt.*;
+
 public class Window {
 
-    public static void createWindow(int width, int height, String title) {
-        Display.setTitle(title);
-        try {
-            Display.setDisplayMode(new DisplayMode(width, height));
-            Display.create();
-            Keyboard.create();
-            Mouse.create();
-        } catch (LWJGLException e) {
-            e.printStackTrace();
-        }
-    }
+    private static int frameRate;
+    private static DisplayMode displayMode = Display.getDesktopDisplayMode();
 
-    public static void render() {
-        Display.update();
-    }
-
-    public static void dispose() {
-        Display.destroy();
-        Keyboard.destroy();
-        Mouse.destroy();
-    }
-
-    public static boolean isCloseRequested() {
-        return Display.isCloseRequested();
-    }
-
-    public static int getWidth() {
-        return Display.getDisplayMode().getWidth();
-    }
-
-    public static int getHeight() {
-        return Display.getDisplayMode().getHeight();
+    public static void setFrameRate(int frameRate) {
+        Window.frameRate = frameRate;
     }
 
     public static void setTitle(String title) {
         Display.setTitle(title);
     }
 
-    public static String getTitle() {
-        return Display.getTitle();
+    public static void setSize(int width, int height) {
+        try {
+            displayMode = new DisplayMode(width, height);
+            Display.setDisplayMode(displayMode);
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public static void setResizable(boolean resizable) {
+        Display.setResizable(resizable);
+    }
+
+    public static void setFullscreen(boolean fullscreen) {
+        try {
+            if (fullscreen) {
+                displayMode = Display.getDisplayMode();
+                Display.setDisplayMode(Display.getDesktopDisplayMode());
+            } else {
+                Display.setDisplayMode(displayMode);
+            }
+            Display.setFullscreen(fullscreen);
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public static void setParent(Canvas canvas) {
+        try {
+            Display.setParent(canvas);
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public static void create() {
+        try {
+            Display.create();
+            Mouse.create();
+            Keyboard.create();
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public static void dispose() {
+        Display.destroy();
+        Mouse.destroy();
+        Keyboard.destroy();
+    }
+
+    public static boolean isCloseRequested() {
+        return Display.isCloseRequested();
+    }
+
+    public static void render() {
+        Display.update();
+        Display.sync(frameRate);
+    }
+
+    public static void update() {
+        if (displayMode.getWidth() != Display.getWidth() || displayMode.getHeight() != Display.getHeight()) {
+            displayMode = new DisplayMode(Display.getWidth(), Display.getHeight());
+            Transform.setProjection(Transform.getFov(), Display.getWidth(), Display.getHeight(), Transform.getzNear(), Transform.getzFar());
+        }
+    }
+
+    public static float getWidth() {
+        return displayMode.getWidth();
+    }
+
+    public static float getHeight() {
+        return displayMode.getHeight();
     }
 
 }

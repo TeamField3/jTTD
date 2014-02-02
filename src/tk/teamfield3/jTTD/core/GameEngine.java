@@ -1,32 +1,57 @@
-package tk.teamfield3.jTTD;
+package tk.teamfield3.jTTD.core;
 
 import tk.teamfield3.jTTD.display.Window;
 import tk.teamfield3.jTTD.util.RenderUtil;
 import tk.teamfield3.jTTD.util.TimeUtil;
 
+import java.awt.*;
+
 public class GameEngine implements Runnable {
 
-    private int width;
-    private int height;
-    private String title;
+    private double updateTime;
     private boolean isRunning;
-    private double frameTime;
 
     private Game game;
     private Thread thread;
 
-    public GameEngine(int width, int height, String title, double frameRate, Game game) {
+    public GameEngine(int width, int height, String title, int frameRate, double updateRate, boolean fullscreen, Game game) {
         this.isRunning = false;
-        this.width = width;
-        this.height = height;
-        this.title = title;
-        this.frameTime = 1.0 / frameRate;
+        this.updateTime = 1.0 / updateRate;
         this.game = game;
         this.thread = new Thread(this, "_main");
+
+        setSize(width, height);
+        setTitle(title);
+        setFrameRate(frameRate);
+        setFullscreen(fullscreen);
+    }
+
+    public void setFrameRate(int frameRate) {
+        Window.setFrameRate(frameRate);
+    }
+
+    public void setParent(Canvas parent) {
+        Window.setParent(parent);
+    }
+
+    public void setResizeable(boolean resizeable) {
+        Window.setResizable(resizeable);
+    }
+
+    public void setTitle(String title) {
+        Window.setTitle(title);
+    }
+
+    public void setSize(int width, int height) {
+        Window.setSize(width, height);
+    }
+
+    public void setFullscreen(boolean fullscreen) {
+        Window.setFullscreen(fullscreen);
     }
 
     public void createWindow() {
-        Window.createWindow(width, height, title);
+        Window.create();
         System.out.println(RenderUtil.getOpenGLVersion());
         RenderUtil.initGraphics();
 
@@ -37,6 +62,7 @@ public class GameEngine implements Runnable {
             return;
 
         isRunning = true;
+        createWindow();
         thread.run();
     }
 
@@ -50,7 +76,8 @@ public class GameEngine implements Runnable {
     @Override
     public void run() {
         int frames = 0;
-        long frameCounter = 0;
+        int updates = 0;
+        long counter = 0;
 
         game.init();
 
@@ -58,43 +85,33 @@ public class GameEngine implements Runnable {
         double unprocessedTime = 0;
 
         while (isRunning) {
-            boolean render = false;
-
             long startTime = TimeUtil.getTime();
             long passedTime = startTime - lastTime;
             lastTime = startTime;
 
             unprocessedTime += passedTime / (double) TimeUtil.SECOND;
-            frameCounter += passedTime;
+            counter += passedTime;
 
-            while (unprocessedTime > frameTime) {
-                render = true;
-
-                unprocessedTime -= frameTime;
+            while (unprocessedTime > updateTime) {
+                unprocessedTime -= updateTime;
 
                 if (Window.isCloseRequested())
                     stop();
 
-                TimeUtil.setDelta(frameTime);
+                TimeUtil.setDelta(updateTime);
 
                 update();
+                updates++;
 
-                if (frameCounter >= TimeUtil.SECOND) {
-                    System.out.println("FPS: " + frames);
+                if (counter >= TimeUtil.SECOND) {
+                    System.out.println("FPS: " + frames + ", UPS: " + updates);
                     frames = 0;
-                    frameCounter = 0;
+                    updates = 0;
+                    counter = 0;
                 }
             }
-            if (render) {
-                render();
-                frames++;
-            } else {
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+            render();
+            frames++;
         }
         cleanUp();
     }
@@ -108,6 +125,7 @@ public class GameEngine implements Runnable {
     private void update() {
         input();
         game.update();
+        Window.update();
     }
 
     private void input() {
