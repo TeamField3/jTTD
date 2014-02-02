@@ -13,7 +13,7 @@ public class TestGame implements Game {
     @Override
     public void init() {
         camera = new TestCamera();
-        mesh = new Mesh("cube.obj");
+        mesh = new Mesh("sphere.obj");
         transform = new Transform();
         Transform.setProjection(70f, Window.getWidth(), Window.getHeight(), 0.1f, 1000);
         Transform.setCamera(camera);
