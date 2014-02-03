@@ -20,11 +20,6 @@ public class TestCamera extends Camera {
         float movAmt = (float) (10 * TimeUtil.getDelta());
 //		float rotAmt = (float)(100 * Time.getDelta());
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
-            Mouse.setGrabbed(false);
-            mouseLocked = false;
-        }
-
         if (Mouse.isButtonDown(0)) {
             Mouse.setGrabbed(true);
             mouseLocked = true;

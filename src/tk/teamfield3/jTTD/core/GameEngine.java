@@ -14,13 +14,14 @@ public class GameEngine implements Runnable {
     private Game game;
     private Thread thread;
 
-    public GameEngine(int width, int height, String title, int frameRate, double updateRate, boolean fullscreen, Game game) {
+    public GameEngine(int width, int height, String title, int frameRate, double updateRate, boolean fullscreen, boolean resizeable, Game game) {
         this.isRunning = false;
         this.updateTime = 1.0 / updateRate;
         this.game = game;
         this.thread = new Thread(this, "_main");
 
         setSize(width, height);
+        setResizeable(resizeable);
         setTitle(title);
         setFrameRate(frameRate);
         setFullscreen(fullscreen);
@@ -79,7 +80,7 @@ public class GameEngine implements Runnable {
         int updates = 0;
         long counter = 0;
 
-        game.init();
+        game.init(this);
 
         long lastTime = TimeUtil.getTime();
         double unprocessedTime = 0;

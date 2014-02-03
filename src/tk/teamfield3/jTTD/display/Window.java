@@ -35,6 +35,10 @@ public class Window {
         Display.setResizable(resizable);
     }
 
+    public static boolean isResizeable() {
+        return Display.isResizable();
+    }
+
     public static void setFullscreen(boolean fullscreen) {
         try {
             if (fullscreen) {
@@ -48,6 +52,10 @@ public class Window {
             e.printStackTrace();
             System.exit(1);
         }
+    }
+
+    public static boolean isFullscreen() {
+        return Display.isFullscreen();
     }
 
     public static void setParent(Canvas canvas) {

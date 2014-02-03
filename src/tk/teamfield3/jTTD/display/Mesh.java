@@ -1,6 +1,7 @@
 package tk.teamfield3.jTTD.display;
 
 import tk.teamfield3.jTTD.util.BufferUtil;
+import tk.teamfield3.jTTD.util.math.Vector2f;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
 import java.io.BufferedReader;
@@ -100,8 +101,9 @@ public class Mesh {
             System.exit(1);
         }
 
-        ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+        ArrayList<Vector3f> vertexCoords = new ArrayList<Vector3f>();
         ArrayList<Integer> indices = new ArrayList<Integer>();
+        ArrayList<Vector2f> textureCoords = new ArrayList<Vector2f>();
 
         BufferedReader meshReader = null;
 
@@ -116,9 +118,9 @@ public class Mesh {
                 if (tokens.length == 0 || tokens[0].equals("#"))
                     continue;
                 else if (tokens[0].equals("v")) {
-                    vertices.add(new Vertex(new Vector3f(Float.valueOf(tokens[1]),
+                    vertexCoords.add(new Vector3f(Float.valueOf(tokens[1]),
                             Float.valueOf(tokens[2]),
-                            Float.valueOf(tokens[3]))));
+                            Float.valueOf(tokens[3])));
                 } else if (tokens[0].equals("f")) {
                     indices.add(Integer.parseInt(tokens[1].split("/")[0]) - 1);
                     indices.add(Integer.parseInt(tokens[2].split("/")[0]) - 1);
@@ -129,18 +131,42 @@ public class Mesh {
                         indices.add(Integer.parseInt(tokens[3].split("/")[0]) - 1);
                         indices.add(Integer.parseInt(tokens[4].split("/")[0]) - 1);
                     }
+                } else if (tokens[0].equals("vt")) {
+                    textureCoords.add(new Vector2f(Float.valueOf(tokens[1]), Float.valueOf(tokens[2])));
                 }
             }
 
             meshReader.close();
 
-            Vertex[] vertexData = new Vertex[vertices.size()];
-            vertices.toArray(vertexData);
+            if (textureCoords.size() == vertexCoords.size()) {
+                ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+                for (Vector3f vertex : vertexCoords) {
+                    for (Vector2f texture : textureCoords) {
+                        vertices.add(new Vertex(vertex, texture));
+                    }
+                }
 
-            Integer[] indexData = new Integer[indices.size()];
-            indices.toArray(indexData);
+                Vertex[] vertexData = new Vertex[vertices.size()];
+                vertices.toArray(vertexData);
 
-            addVertices(vertexData, BufferUtil.toIntArray(indexData), true);
+                Integer[] indexData = new Integer[indices.size()];
+                indices.toArray(indexData);
+
+                addVertices(vertexData, BufferUtil.toIntArray(indexData), true);
+            } else {
+                ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+                for (Vector3f vertex : vertexCoords) {
+                    vertices.add(new Vertex(vertex));
+                }
+                Vertex[] vertexData = new Vertex[vertexCoords.size()];
+                vertices.toArray(vertexData);
+
+                Integer[] indexData = new Integer[indices.size()];
+                indices.toArray(indexData);
+
+                addVertices(vertexData, BufferUtil.toIntArray(indexData), true);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
