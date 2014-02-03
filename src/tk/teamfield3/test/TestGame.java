@@ -4,9 +4,9 @@ import org.lwjgl.input.Keyboard;
 import tk.teamfield3.jTTD.core.Game;
 import tk.teamfield3.jTTD.core.GameEngine;
 import tk.teamfield3.jTTD.core.GameObject;
-import tk.teamfield3.jTTD.display.Camera;
-import tk.teamfield3.jTTD.display.Transform;
-import tk.teamfield3.jTTD.display.Window;
+import tk.teamfield3.jTTD.display.*;
+import tk.teamfield3.jTTD.util.math.Vector2f;
+import tk.teamfield3.jTTD.util.math.Vector3f;
 
 public class TestGame implements Game {
 
@@ -21,10 +21,19 @@ public class TestGame implements Game {
         camera = new TestCamera();
 
         // Mesh mesh = new Mesh("sphere.obj");
-
-
-        TestComponent component = new TestFloor();
+        float fieldDepth = 10.0f;
+        float fieldWidth = 10.0f;
+        Vertex[] vertices = new Vertex[] { 	new Vertex( new Vector3f(-fieldWidth, 0.0f, -fieldDepth), new Vector2f(0.0f, 0.0f)),
+                new Vertex( new Vector3f(-fieldWidth, 0.0f, fieldDepth * 3), new Vector2f(0.0f, 1.0f)),
+                new Vertex( new Vector3f(fieldWidth * 3, 0.0f, -fieldDepth), new Vector2f(1.0f, 0.0f)),
+                new Vertex( new Vector3f(fieldWidth * 3, 0.0f, fieldDepth * 3), new Vector2f(1.0f, 1.0f))};
+        int indices[] = { 0, 1, 2,
+                2, 1, 3};
+        TestComponent component = new TestFloor(new Mesh(vertices, indices, true));
         root.addComponent(component);
+        GameObject cube = new GameObject();
+        cube.addComponent(new TestCube());
+        root.addChild(cube);
 
         Transform.setProjection(70f, Window.getWidth(), Window.getHeight(), 0.1f, 1000);
         Transform.setCamera(camera);
