@@ -2,7 +2,18 @@ jTTD
 ====
 
 3D Game Engine written in Java, hopefully for all of our Java games.
-Uses lwjgl and slick(maybe).
+Uses lwjgl and slick.
+
+Building
+====
+We are using maven now so it is very easy to build.
+First run:
+    mvn antrun:run
+to get slick-util.
+
+Then run:
+    mvn install
+to build.
 
 Contribute
 ====
