@@ -11,7 +11,7 @@ public abstract class Camera {
     protected Vector3f forward;
     protected Vector3f up;
     protected boolean mouseLocked = false;
-    protected Vector2f centerPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
+    protected Vector2f centerPosition = new Vector2f((int) Window.getWidth() / 2, (int) Window.getHeight() / 2);
 
     protected Camera() {
         this(new Vector3f(0, 0, 0), new Vector3f(0, 0, 1), new Vector3f(0, 1, 0));
@@ -26,7 +26,7 @@ public abstract class Camera {
     public abstract void input();
 
     public void updateCenterPosition() {
-        centerPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
+        centerPosition = new Vector2f((int) (Window.getWidth() / 2), (int) (Window.getHeight() / 2));
     }
 
     public void move(Vector3f dir, float amt) {
