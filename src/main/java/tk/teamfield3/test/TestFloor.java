@@ -21,13 +21,9 @@ public class TestFloor extends TestComponent {
 
     }
 
-    int i;
     @Override
     public void render() {
         super.render();
-
-        i++;
-        transform.setRotation(0, i, 0);
     }
 
 }
