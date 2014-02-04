@@ -3,7 +3,7 @@ package tk.teamfield3.jTTD.display;
 import tk.teamfield3.jTTD.util.math.Vector2f;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
-public abstract class Camera { // Going to need to organize this class
+public abstract class Camera {
 
     public static final Vector3f yAxis = new Vector3f(0, 1, 0);
 
@@ -24,6 +24,10 @@ public abstract class Camera { // Going to need to organize this class
     }
 
     public abstract void input();
+
+    public void updateCenterPosition() {
+        centerPosition = new Vector2f(Window.getWidth() / 2, Window.getHeight() / 2);
+    }
 
     public void move(Vector3f dir, float amt) {
         pos = pos.add(dir.multiply(amt));

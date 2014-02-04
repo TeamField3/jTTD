@@ -97,6 +97,7 @@ public class Window {
         if (displayMode.getWidth() != Display.getWidth() || displayMode.getHeight() != Display.getHeight()) {
             displayMode = new DisplayMode(Display.getWidth(), Display.getHeight());
             Transform.setProjection(Transform.getFov(), Display.getWidth(), Display.getHeight(), Transform.getzNear(), Transform.getzFar());
+            Transform.getCamera().updateCenterPosition();
         }
     }
 
