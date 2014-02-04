@@ -1,19 +1,15 @@
 package tk.teamfield3.jTTD.core;
 
-import tk.teamfield3.jTTD.display.Transform;
-
 import java.util.ArrayList;
 
 public class GameObject {
 
     private ArrayList<GameObject> children;
     private ArrayList<GameComponent> components;
-    private Transform transform;
 
     public GameObject() {
         children = new ArrayList<GameObject>();
         components = new ArrayList<GameComponent>();
-        transform = new Transform();
     }
 
     public void addChild(GameObject child) {
@@ -26,7 +22,7 @@ public class GameObject {
 
     public void input() {
         for (GameComponent component : components)
-            component.input(transform);
+            component.input();
 
         for (GameObject child : children)
             child.input();
@@ -34,7 +30,7 @@ public class GameObject {
 
     public void update() {
         for (GameComponent component : components)
-            component.update(transform);
+            component.update();
 
         for (GameObject child : children)
             child.update();
@@ -42,14 +38,18 @@ public class GameObject {
 
     public void render() {
         for (GameComponent component : components)
-            component.render(transform);
+            component.render();
 
         for (GameObject child : children)
             child.render();
     }
 
-    public Transform getTransform() {
-        return transform;
+    public ArrayList<GameObject> getChildren() {
+        return children;
+    }
+
+    public ArrayList<GameComponent> getComponents() {
+        return components;
     }
 
 }

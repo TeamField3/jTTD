@@ -3,28 +3,31 @@ package tk.teamfield3.test;
 import tk.teamfield3.jTTD.display.Material;
 import tk.teamfield3.jTTD.display.Mesh;
 import tk.teamfield3.jTTD.display.Texture;
-import tk.teamfield3.jTTD.display.Transform;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
 public class TestFloor extends TestComponent {
 
     public TestFloor(Mesh mesh) {
-        super(mesh, new Material(new Texture("test.png"), new Vector3f(1, 1, 1), 1, 8));
+        super(mesh, new Material(new Texture("test.png"), new Vector3f(1, 1, 1), 1, 8), new Vector3f(0, 0, 0));
     }
 
     @Override
-    public void input(Transform transform) {
-
-    }
-
-    @Override
-    public void update(Transform transform) {
+    public void input() {
 
     }
 
     @Override
-    public void render(Transform transform) {
-        super.render(transform);
+    public void update() {
+
+    }
+
+    int i;
+    @Override
+    public void render() {
+        super.render();
+
+        i++;
+        transform.setRotation(0, i, 0);
     }
 
 }

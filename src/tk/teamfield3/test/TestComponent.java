@@ -4,26 +4,21 @@ import tk.teamfield3.jTTD.core.GameComponent;
 import tk.teamfield3.jTTD.display.Material;
 import tk.teamfield3.jTTD.display.Mesh;
 import tk.teamfield3.jTTD.display.Shader;
-import tk.teamfield3.jTTD.display.Transform;
+import tk.teamfield3.jTTD.util.math.Vector3f;
 
 public class TestComponent extends GameComponent {
 
-    public TestComponent(Mesh mesh, Material material) {
-        super(mesh, material);
+    public TestComponent(Mesh mesh, Material material, Vector3f position) {
+        super(mesh, material, position);
     }
 
     @Override
-    public void input(Transform transform) {
-
-    }
-
-    @Override
-    public void update(Transform transform) {
+    public void input() {
 
     }
 
     @Override
-    public void render(Transform transform) {
+    public void render() {
         Shader shader = BasicShader.getInstance();
 
         shader.bind();

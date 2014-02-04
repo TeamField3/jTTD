@@ -91,6 +91,10 @@ public class Vector3f {
         return "(" + x + " " + y + " " + z + ")";
     }
 
+    public void incX(float amt) {
+        x += amt;
+    }
+
     public float getX() {
         return x;
     }
@@ -107,12 +111,20 @@ public class Vector3f {
         this.y = y;
     }
 
+    public void incY(float amt) {
+        y += amt;
+    }
+
     public float getZ() {
         return z;
     }
 
     public void setZ(float z) {
         this.z = z;
+    }
+
+    public void incZ(float amt) {
+        z += amt;
     }
 
 }

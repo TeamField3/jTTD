@@ -1,10 +1,15 @@
 package tk.teamfield3.jTTD.core;
 
-public interface Game {
+public abstract class Game {
 
-    public void init(GameEngine engine);
-    public void input();
-    public void update();
-    public void render();
+    public GameObject rootObject = new GameObject();
+
+    public abstract void init(GameEngine engine);
+
+    public abstract void input();
+
+    public abstract void update();
+
+    public abstract void render();
 
 }

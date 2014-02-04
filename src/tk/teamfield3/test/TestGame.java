@@ -8,16 +8,14 @@ import tk.teamfield3.jTTD.display.*;
 import tk.teamfield3.jTTD.util.math.Vector2f;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
-public class TestGame implements Game {
+public class TestGame extends Game {
 
     private GameEngine engine;
     private Camera camera;
-    private GameObject root;
 
     @Override
     public void init(GameEngine engine) {
         this.engine = engine;
-        root = new GameObject();
         camera = new TestCamera();
 
         // Mesh mesh = new Mesh("sphere.obj");
@@ -30,10 +28,11 @@ public class TestGame implements Game {
         int indices[] = { 0, 1, 2,
                 2, 1, 3};
         TestComponent component = new TestFloor(new Mesh(vertices, indices, true));
-        root.addComponent(component);
+        rootObject.addComponent(component);
         GameObject cube = new GameObject();
-        cube.addComponent(new TestCube());
-        root.addChild(cube);
+        cube.addComponent(new TestCube(new Vector3f(0, 10, 0)));
+        cube.addComponent(new TestCube(new Vector3f(5, 10, 5)));
+        rootObject.addChild(cube);
 
         Transform.setProjection(70f, Window.getWidth(), Window.getHeight(), 0.1f, 1000);
         Transform.setCamera(camera);
@@ -43,24 +42,22 @@ public class TestGame implements Game {
     public void input() {
         if (Keyboard.isKeyDown(Keyboard.KEY_F)) {
             if (Window.isFullscreen())
-                Window.setFullscreen(false);
+                engine.setFullscreen(false);
             else
-                Window.setFullscreen(true);
+                engine.setFullscreen(true);
         }
-        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
-            engine.stop();
         camera.input();
-        root.input();
+        rootObject.input();
     }
 
     @Override
     public void update() {
-        root.update();
+        rootObject.update();
     }
 
     @Override
     public void render() {
-        root.render();
+        rootObject.render();
     }
 
 }
