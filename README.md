@@ -4,6 +4,13 @@ jTTD
 3D Game Engine written in Java, hopefully for all of our Java games.
 Uses lwjgl and slick(maybe).
 
+Contribute
+====
+
+If you would like to contribute(thanks!), you should fork this repository and then make your changes there. Once you are done, come back here and make a pull request. Be descriptive of what your changes are doing.
+
+Please follow standard Java coding standards, and don't import every single thing in org.lwjgl.GL11, GL15, GL20, etc. Use *.
+
 License
 ====
 
