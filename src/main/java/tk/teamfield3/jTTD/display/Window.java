@@ -8,6 +8,8 @@ import org.lwjgl.opengl.DisplayMode;
 
 import java.awt.*;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public class Window {
 
     private static int frameRate;
@@ -98,6 +100,7 @@ public class Window {
             displayMode = new DisplayMode(Display.getWidth(), Display.getHeight());
             Transform.setProjection(Transform.getFov(), Display.getWidth(), Display.getHeight(), Transform.getzNear(), Transform.getzFar());
             Transform.getCamera().updateCenterPosition();
+            glViewport(0, 0, displayMode.getWidth(), displayMode.getHeight());
         }
     }
 

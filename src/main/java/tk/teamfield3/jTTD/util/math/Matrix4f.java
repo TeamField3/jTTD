@@ -166,26 +166,26 @@ public class Matrix4f {
         float tanHalfFOV = (float) Math.tan(Math.toRadians(fov / 2));
         float zRange = zNear - zFar;
 
-        // 1 / (tanHalfFOV * ar),              0,                      0, 0
-        //                     0, 1 / tanHalfFOV,                      0, 0
-        //                     0,              0, (-zNear - zFar)/zRange, 2 * zFar * zNear / zRange
+        // 1 / (tanHalfFOV * ar),              0,                      0  , 0
+        //                     0, 1 / tanHalfFOV,                      0  , 0
+        //                     0,              0, (-zNear - zFar) / zRange, 2 * zFar * zNear / zRange
         // 0, 0, 1, 0
         matrix[0][0] = 1.0f / (tanHalfFOV * ar);
-        matrix[0][1] = 0;
-        matrix[0][2] = 0;
-        matrix[0][3] = 0;
-        matrix[1][0] = 0;
+        matrix[0][1] = 0.0f;
+        matrix[0][2] = 0.0f;
+        matrix[0][3] = 0.0f;
+        matrix[1][0] = 0.0f;
         matrix[1][1] = 1.0f / tanHalfFOV;
-        matrix[1][2] = 0;
-        matrix[1][3] = 0;
-        matrix[2][0] = 0;
-        matrix[2][1] = 0;
+        matrix[1][2] = 0.0f;
+        matrix[1][3] = 0.0f;
+        matrix[2][0] = 0.0f;
+        matrix[2][1] = 0.0f;
         matrix[2][2] = (-zNear - zFar) / zRange;
-        matrix[2][3] = 2 * zFar * zNear / zRange;
-        matrix[3][0] = 0;
-        matrix[3][1] = 0;
-        matrix[3][2] = 1;
-        matrix[3][3] = 0;
+        matrix[2][3] = 2.0f * zFar * zNear / zRange;
+        matrix[3][0] = 0.0f;
+        matrix[3][1] = 0.0f;
+        matrix[3][2] = 1.0f;
+        matrix[3][3] = 0.0f;
 
         return this;
     }
