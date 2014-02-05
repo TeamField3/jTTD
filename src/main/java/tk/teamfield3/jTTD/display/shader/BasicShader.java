@@ -1,7 +1,6 @@
-package tk.teamfield3.test;
+package tk.teamfield3.jTTD.display.shader;
 
 import tk.teamfield3.jTTD.display.Material;
-import tk.teamfield3.jTTD.display.Shader;
 import tk.teamfield3.jTTD.util.RenderUtil;
 import tk.teamfield3.jTTD.util.math.Matrix4f;
 
@@ -16,8 +15,8 @@ public class BasicShader extends Shader {
     private BasicShader() {
         super();
 
-        addVertexShaderFromFile("basicVertex.vs");
-        addFragmentShaderFromFile("basicFragment.fs");
+        addVertexShaderFromFile("basicVertex.vs", true);
+        addFragmentShaderFromFile("basicFragment.fs", true);
         compileShader();
 
         addUniform("transform");

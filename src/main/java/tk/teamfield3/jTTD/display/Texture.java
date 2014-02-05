@@ -13,8 +13,8 @@ public class Texture {
 
     private int id;
 
-    public Texture(String fileName) {
-        this(loadTexture(fileName));
+    public Texture(String fileName, boolean isInJar) {
+        this(loadTexture(fileName, isInJar));
     }
 
     public Texture(int id) {
@@ -29,12 +29,16 @@ public class Texture {
         return id;
     }
 
-    private static int loadTexture(String fileName) {
+    private static int loadTexture(String fileName, boolean isInJar) {
         String[] splitArray = fileName.split("\\.");
         String ext = splitArray[splitArray.length - 1];
 
         try {
-            int id = TextureLoader.getTexture(ext, new FileInputStream(new File("./res/textures/" + fileName))).getTextureID();
+            int id;
+            if (isInJar)
+                id = TextureLoader.getTexture(ext, Texture.class.getResourceAsStream("/textures/" + fileName)).getTextureID();
+            else
+                id = TextureLoader.getTexture(ext, new FileInputStream(new File("./res/textures/" + fileName))).getTextureID();
 
             return id;
         } catch (IOException e) {

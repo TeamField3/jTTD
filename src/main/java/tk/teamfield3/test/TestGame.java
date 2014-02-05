@@ -27,8 +27,8 @@ public class TestGame extends Game {
                 new Vertex( new Vector3f(fieldWidth * 3, 0.0f, fieldDepth * 3), new Vector2f(1.0f, 1.0f))};
         int indices[] = { 0, 1, 2,
                 2, 1, 3};
-        TestComponent component = new TestFloor(new Mesh(vertices, indices, true));
-        rootObject.addComponent(component);
+        TestComponent floor1 = new TestFloor(new Mesh(vertices, indices, true));
+        rootObject.addComponent(floor1);
         GameObject cube = new GameObject();
         cube.addComponent(new TestCube(new Vector3f(0, 10, 0)));
         cube.addComponent(new TestCube(new Vector3f(5, 10, 5)));

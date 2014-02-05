@@ -1,11 +1,13 @@
-package tk.teamfield3.jTTD.display;
+package tk.teamfield3.jTTD.display.shader;
 
+import tk.teamfield3.jTTD.display.Material;
 import tk.teamfield3.jTTD.util.BufferUtil;
 import tk.teamfield3.jTTD.util.math.Matrix4f;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL20.*;
@@ -45,8 +47,8 @@ public class Shader {
         uniforms.put(uniform, uniformLocation);
     }
 
-    public void addVertexShaderFromFile(String text) {
-        addProgram(loadShader(text), GL_VERTEX_SHADER);
+    public void addVertexShaderFromFile(String text, boolean isInJar) {
+        addProgram(loadShader(text, isInJar), GL_VERTEX_SHADER);
     }
 
 //    OpenGL 32
@@ -54,8 +56,8 @@ public class Shader {
 //        addProgram(loadShader(text), GL_GEOMETRY_SHADER);
 //    }
 
-    public void addFragmentShaderFromFile(String text) {
-        addProgram(loadShader(text), GL_FRAGMENT_SHADER);
+    public void addFragmentShaderFromFile(String text, boolean isInJar) {
+        addProgram(loadShader(text, isInJar), GL_FRAGMENT_SHADER);
     }
 
     public void addVertexShader(String text) {
@@ -106,12 +108,16 @@ public class Shader {
         glAttachShader(program, shader);
     }
 
-    private static String loadShader(String fileName) {
+    private static String loadShader(String fileName, boolean isInJar) {
         StringBuilder shaderSource = new StringBuilder();
         BufferedReader shaderReader = null;
 
         try {
-            shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
+            if (isInJar)
+                shaderReader = new BufferedReader(new InputStreamReader(Shader.class.getResourceAsStream("/shaders/" + fileName)));
+            else
+                shaderReader = new BufferedReader(new FileReader("./res/shaders/" + fileName));
+
             String line;
 
             while ((line = shaderReader.readLine()) != null) {
