@@ -136,6 +136,36 @@ public class Matrix4f {
         return this;
     }
 
+    public Matrix4f initRotation(Vector3f forward, Vector3f up) {
+        Vector3f f = forward.getNormalized();
+
+        Vector3f r = up.getNormalized();
+        r = r.cross(f);
+
+        Vector3f u = f.cross(r);
+        // r.getX, r.getY, r.getZ, 0
+        // u     , u     , u     , 0
+        // f     , f     , f     , 0
+        matrix[0][0] = r.getX();
+        matrix[0][1] = r.getY();
+        matrix[0][2] = r.getZ();
+        matrix[0][3] = 0;
+        matrix[1][0] = u.getX();
+        matrix[1][1] = u.getY();
+        matrix[1][2] = u.getZ();
+        matrix[1][3] = 0;
+        matrix[2][0] = f.getX();
+        matrix[2][1] = f.getY();
+        matrix[2][2] = f.getZ();
+        matrix[2][3] = 0;
+        matrix[3][0] = 0;
+        matrix[3][1] = 0;
+        matrix[3][2] = 0;
+        matrix[3][3] = 1;
+
+        return this;
+    }
+
     public Matrix4f initScale(float x, float y, float z) {
         // x, 0, 0, 0
         // 0, y, 0, 0
@@ -161,31 +191,59 @@ public class Matrix4f {
         return this;
     }
 
-    public Matrix4f initProjection(float fov, float width, float height, float zNear, float zFar) {
-        float ar = width / height;
-        float tanHalfFOV = (float) Math.tan(Math.toRadians(fov / 2));
+    public Matrix4f initPerspective(float fov, float aspectRatio, float zNear, float zFar) {
+        float tanHalfFOV = (float) Math.tan(fov / 2);
         float zRange = zNear - zFar;
 
         // 1 / (tanHalfFOV * ar),              0,                      0  , 0
         //                     0, 1 / tanHalfFOV,                      0  , 0
         //                     0,              0, (-zNear - zFar) / zRange, 2 * zFar * zNear / zRange
         // 0, 0, 1, 0
-        matrix[0][0] = 1.0f / (tanHalfFOV * ar);
-        matrix[0][1] = 0.0f;
-        matrix[0][2] = 0.0f;
-        matrix[0][3] = 0.0f;
-        matrix[1][0] = 0.0f;
+        matrix[0][0] = 1.0f / (tanHalfFOV * aspectRatio);
+        matrix[0][1] = 0;
+        matrix[0][2] = 0;
+        matrix[0][3] = 0;
+        matrix[1][0] = 0;
         matrix[1][1] = 1.0f / tanHalfFOV;
-        matrix[1][2] = 0.0f;
-        matrix[1][3] = 0.0f;
-        matrix[2][0] = 0.0f;
-        matrix[2][1] = 0.0f;
+        matrix[1][2] = 0;
+        matrix[1][3] = 0;
+        matrix[2][0] = 0;
+        matrix[2][1] = 0;
         matrix[2][2] = (-zNear - zFar) / zRange;
-        matrix[2][3] = 2.0f * zFar * zNear / zRange;
-        matrix[3][0] = 0.0f;
-        matrix[3][1] = 0.0f;
-        matrix[3][2] = 1.0f;
-        matrix[3][3] = 0.0f;
+        matrix[2][3] = 2 * zFar * zNear / zRange;
+        matrix[3][0] = 0;
+        matrix[3][1] = 0;
+        matrix[3][2] = 1;
+        matrix[3][3] = 0;
+
+        return this;
+    }
+
+    public Matrix4f initOrthographcView(float left, float right, float bottom, float top, float near, float far) {
+        float width = right - left;
+        float height = top - bottom;
+        float depth = far - near;
+
+        // width,      0,     0, left
+        //     0, height,     0, bottom
+        //     0,      0, depth, near
+        //     0,      0,     0, 1
+        matrix[0][0] = width;
+        matrix[0][1] = 0;
+        matrix[0][2] = 0;
+        matrix[0][3] = left;
+        matrix[1][0] = 0;
+        matrix[1][1] = height;
+        matrix[1][2] = 0;
+        matrix[1][3] = bottom;
+        matrix[2][0] = 0;
+        matrix[2][1] = 0;
+        matrix[2][2] = depth;
+        matrix[2][3] = near;
+        matrix[3][0] = 0;
+        matrix[3][1] = 0;
+        matrix[3][2] = 0;
+        matrix[3][3] = 1;
 
         return this;
     }

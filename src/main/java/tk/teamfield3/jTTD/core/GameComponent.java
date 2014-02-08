@@ -3,6 +3,7 @@ package tk.teamfield3.jTTD.core;
 import tk.teamfield3.jTTD.display.Material;
 import tk.teamfield3.jTTD.display.Mesh;
 import tk.teamfield3.jTTD.display.Transform;
+import tk.teamfield3.jTTD.display.shader.Shader;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
 public abstract class GameComponent {
@@ -25,13 +26,13 @@ public abstract class GameComponent {
         this.transform = new Transform();
     }
 
-    public abstract void input();
+    public abstract void input(float delta);
 
-    public void update() {
+    public void update(float delta) {
         transform.setTranslation(position);
     }
 
-    public abstract void render();
+    public abstract void render(Shader shader);
 
     public void move(Vector3f move) {
         position.incX(move.getX());

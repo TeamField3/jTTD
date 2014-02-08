@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import tk.teamfield3.jTTD.core.GameEngine;
 
 import java.awt.*;
 
@@ -98,8 +99,9 @@ public class Window {
     public static void update() {
         if (displayMode.getWidth() != Display.getWidth() || displayMode.getHeight() != Display.getHeight()) {
             displayMode = new DisplayMode(Display.getWidth(), Display.getHeight());
-            Transform.setProjection(Transform.getFov(), Display.getWidth(), Display.getHeight(), Transform.getzNear(), Transform.getzFar());
-            Transform.getCamera().updateCenterPosition();
+            // TODO: MAKE FOV, zNear, zFar CHANGABLE
+            GameEngine.getInstance().getRenderer().getCamera().setParameters(70f, Display.getWidth() / Display.getHeight(), 0.1f, 1000);
+            GameEngine.getInstance().getRenderer().getCamera().updateCenterPosition();
             glViewport(0, 0, displayMode.getWidth(), displayMode.getHeight());
         }
     }

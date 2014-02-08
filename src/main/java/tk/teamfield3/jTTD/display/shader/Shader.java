@@ -1,6 +1,8 @@
 package tk.teamfield3.jTTD.display.shader;
 
+import tk.teamfield3.jTTD.core.GameRenderer;
 import tk.teamfield3.jTTD.display.Material;
+import tk.teamfield3.jTTD.display.Transform;
 import tk.teamfield3.jTTD.util.BufferUtil;
 import tk.teamfield3.jTTD.util.math.Matrix4f;
 import tk.teamfield3.jTTD.util.math.Vector3f;
@@ -14,6 +16,7 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class Shader {
 
+    private GameRenderer renderer;
     private int program;
     private HashMap<String, Integer> uniforms;
 
@@ -31,7 +34,7 @@ public class Shader {
         glUseProgram(program);
     }
 
-    public void updateUniforms(Matrix4f worldMatrix, Matrix4f projectedMatrix, Material material) {
+    public void updateUniforms(Transform transform, Material material) {
 
     }
 
@@ -148,6 +151,14 @@ public class Shader {
 
     public void setUniform(String uniformName, Matrix4f value) {
         glUniformMatrix4(uniforms.get(uniformName), true, BufferUtil.createFlippedBuffer(value));
+    }
+
+    public void setRenderingEngine(GameRenderer renderer) {
+        this.renderer = renderer;
+    }
+
+    public GameRenderer getRenderingEngine() {
+        return renderer;
     }
 
 }

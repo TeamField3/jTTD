@@ -12,18 +12,13 @@ public class TestFloor extends TestComponent {
     }
 
     @Override
-    public void input() {
+    public void input(float delta) {
 
     }
 
     @Override
-    public void update() {
+    public void update(float delta) {
 
-    }
-
-    @Override
-    public void render() {
-        super.render();
     }
 
 }

@@ -1,5 +1,6 @@
 package tk.teamfield3.jTTD.display;
 
+import tk.teamfield3.jTTD.util.math.Matrix4f;
 import tk.teamfield3.jTTD.util.math.Vector2f;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
@@ -10,20 +11,28 @@ public abstract class Camera {
     protected Vector3f pos;
     protected Vector3f forward;
     protected Vector3f up;
-    protected boolean mouseLocked = false;
+    protected Matrix4f projection;
     protected Vector2f centerPosition = new Vector2f((int) Window.getWidth() / 2, (int) Window.getHeight() / 2);
 
-    protected Camera() {
-        this(new Vector3f(0, 0, 0), new Vector3f(0, 0, 1), new Vector3f(0, 1, 0));
+    protected Camera(float fov, float aspect, float zNear, float zFar) {
+        this(new Vector3f(0, 0, 0), new Vector3f(0, 0, 1), new Vector3f(0, 1, 0), fov, aspect, zNear, zFar);
     }
 
-    protected Camera(Vector3f pos, Vector3f forward, Vector3f up) {
+    protected Camera(Vector3f pos, Vector3f forward, Vector3f up, float fov, float aspect, float zNear, float zFar) {
         this.pos = pos;
         this.forward = forward.getNormalized();
         this.up = up.getNormalized();
+        this.projection = new Matrix4f().initPerspective(fov, aspect, zNear, zFar);
     }
 
-    public abstract void input();
+    public Matrix4f getViewProjection() {
+        Matrix4f cameraRotation = new Matrix4f().initRotation(forward, up);
+        Matrix4f cameraTranslation = new Matrix4f().initTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
+
+        return projection.multiply(cameraRotation.multiply(cameraTranslation));
+    }
+
+    public abstract void input(float delta);
 
     public void updateCenterPosition() {
         centerPosition = new Vector2f((int) (Window.getWidth() / 2), (int) (Window.getHeight() / 2));
@@ -79,6 +88,10 @@ public abstract class Camera {
 
     public void setUp(Vector3f up) {
         this.up = up;
+    }
+
+    public void setParameters(float fov, float aspect, float zNear, float zFar) {
+        this.projection = new Matrix4f().initPerspective(fov, aspect, zNear, zFar);
     }
 
 }

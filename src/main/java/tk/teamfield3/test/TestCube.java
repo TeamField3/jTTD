@@ -14,8 +14,8 @@ public class TestCube extends TestComponent {
     int i = 0;
 
     @Override
-    public void update( ) {
-        super.update();
+    public void update(float delta) {
+        super.update(delta);
 
         i++;
         transform.setRotation(i, i, i);

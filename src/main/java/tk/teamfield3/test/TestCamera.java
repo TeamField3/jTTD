@@ -4,21 +4,20 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import tk.teamfield3.jTTD.display.Camera;
 import tk.teamfield3.jTTD.display.Window;
-import tk.teamfield3.jTTD.util.TimeUtil;
 import tk.teamfield3.jTTD.util.math.Vector2f;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
 public class TestCamera extends Camera {
 
-    public TestCamera() {
-        super();
+    public TestCamera(float fov, float aspect, float zNear, float zFar) {
+        super(fov, aspect, zNear, zFar);
     }
 
+    boolean mouseLocked = false;
     @Override
-    public void input() {
+    public void input(float delta) {
         float sensitivity = 0.5f;
-        float movAmt = (float) (10 * TimeUtil.getDelta());
-//		float rotAmt = (float)(100 * Time.getDelta());
+        float movAmt = (10 * delta);
 
         if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)) {
             Mouse.setGrabbed(false);

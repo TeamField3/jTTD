@@ -1,30 +1,40 @@
 package tk.teamfield3.jTTD.core;
 
 import tk.teamfield3.jTTD.display.Window;
-import tk.teamfield3.jTTD.util.RenderUtil;
 import tk.teamfield3.jTTD.util.TimeUtil;
 
 import java.awt.*;
 
 public class GameEngine implements Runnable {
 
+    private static GameEngine instance;
+
     private double updateTime;
     private boolean isRunning;
 
     private Game game;
+    private GameRenderer renderer;
     private Thread thread;
 
-    public GameEngine(int width, int height, String title, int frameRate, double updateRate, boolean fullscreen, boolean resizeable, Game game) {
-        this.isRunning = false;
-        this.updateTime = 1.0 / updateRate;
-        this.game = game;
-        this.thread = new Thread(this, "_main");
+    public static GameEngine getInstance() {
+        if (instance == null) {
+            instance = new GameEngine();
+        }
 
-        setSize(width, height);
-        setResizeable(resizeable);
-        setTitle(title);
-        setFrameRate(frameRate);
-        setFullscreen(fullscreen);
+        return instance;
+    }
+
+    private GameEngine() {
+        isRunning = false;
+        thread = new Thread(this, "_main");
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public void setUpdateRate(int updateRate) {
+        updateTime = 1.0 / updateRate;
     }
 
     public void setFrameRate(int frameRate) {
@@ -53,9 +63,9 @@ public class GameEngine implements Runnable {
 
     public void createWindow() {
         Window.create();
-        System.out.println(RenderUtil.getOpenGLVersion());
-        RenderUtil.initGraphics();
-
+        game.init(); // TODO: Maybe move this somewhere else
+        renderer = new GameRenderer(game.getCamera());
+        System.out.println(renderer.getOpenGLVersion());
     }
 
     public synchronized void start() {
@@ -80,8 +90,6 @@ public class GameEngine implements Runnable {
         int updates = 0;
         long counter = 0;
 
-        game.init(this);
-
         long lastTime = TimeUtil.getTime();
         double unprocessedTime = 0;
 
@@ -101,7 +109,9 @@ public class GameEngine implements Runnable {
 
                 TimeUtil.setDelta(updateTime);
 
-                update();
+                game.update((float) TimeUtil.getDelta());
+                renderer.input((float) TimeUtil.getDelta());
+                Window.update();
                 updates++;
 
                 if (counter >= TimeUtil.SECOND) {
@@ -111,30 +121,19 @@ public class GameEngine implements Runnable {
                     counter = 0;
                 }
             }
-            render();
+            renderer.render(game.getRootObject());
+            Window.render();
             frames++;
         }
         cleanUp();
     }
 
-    private void render() {
-        RenderUtil.clearScreen();
-        game.render();
-        Window.render();
-    }
-
-    private void update() {
-        input();
-        game.update();
-        Window.update();
-    }
-
-    private void input() {
-        game.input();
-    }
-
     private void cleanUp() {
         Window.dispose();
+    }
+
+    public GameRenderer getRenderer() {
+        return renderer;
     }
 
 }

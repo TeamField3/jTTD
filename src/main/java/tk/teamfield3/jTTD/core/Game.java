@@ -1,15 +1,28 @@
 package tk.teamfield3.jTTD.core;
 
+import tk.teamfield3.jTTD.display.Camera;
+
 public abstract class Game {
 
-    public GameObject rootObject = new GameObject();
+    protected Camera camera;
+    private GameObject rootObject = new GameObject();
 
-    public abstract void init(GameEngine engine);
+    public abstract void init();
 
-    public abstract void input();
+    private void input(float delta) {
+        rootObject.input(delta);
+    }
 
-    public abstract void update();
+    public void update(float delta) {
+        input(delta);
+        rootObject.update(delta);
+    }
 
-    public abstract void render();
+    public GameObject getRootObject() {
+        return rootObject;
+    }
 
+    public Camera getCamera() {
+        return camera;
+    }
 }
