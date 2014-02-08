@@ -8,10 +8,12 @@ Building
 ====
 We are using maven now so it is very easy to build.
 First run:
+
     mvn antrun:run
 to get slick-util.
 
 Then run:
+
     mvn install
 to build.
 
