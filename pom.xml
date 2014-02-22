@@ -12,28 +12,31 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.5</version>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <target>
-                        <!-- download file -->
-                        <get src="https://dl.dropboxusercontent.com/u/223645505/slick/slick-util/slick-util.jar"
-                             dest="${project.build.directory}/slick-util.jar"
-                             verbose="false"
-                             usetimestamp="true"/>
-                    </target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
-                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <!-- this is used for inheritance merges -->
+                        <phase>package</phase>
+                        <!-- bind to the packaging phase -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
@@ -48,13 +51,6 @@
             <groupId>org.lwjgl.lwjgl</groupId>
             <artifactId>lwjgl_util</artifactId>
             <version>2.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>slick</groupId>
-            <artifactId>slick-util</artifactId>
-            <version>1.0</version>
-            <systemPath>${basedir}/target/slick-util.jar</systemPath>
-            <scope>system</scope>
         </dependency>
     </dependencies>
 

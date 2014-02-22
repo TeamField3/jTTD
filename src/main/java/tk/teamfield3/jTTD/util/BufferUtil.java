@@ -4,11 +4,16 @@ import org.lwjgl.BufferUtils;
 import tk.teamfield3.jTTD.display.Vertex;
 import tk.teamfield3.jTTD.util.math.Matrix4f;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 public class BufferUtil {
+
+    public static ByteBuffer createByteBuffer(int size) {
+        return BufferUtils.createByteBuffer(size);
+    }
 
     public static FloatBuffer createFloatBuffer(int size) {
         return BufferUtils.createFloatBuffer(size);

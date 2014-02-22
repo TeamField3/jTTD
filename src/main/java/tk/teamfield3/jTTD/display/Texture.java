@@ -1,9 +1,9 @@
 package tk.teamfield3.jTTD.display;
 
-import org.newdawn.slick.opengl.TextureLoader;
+import tk.teamfield3.jTTD.util.ImageUtil;
 
+import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
@@ -36,9 +36,9 @@ public class Texture {
         try {
             int id;
             if (isInJar)
-                id = TextureLoader.getTexture(ext, Texture.class.getResourceAsStream("/textures/" + fileName)).getTextureID();
+                id = ImageUtil.getTexture(ImageIO.read(Texture.class.getResourceAsStream("/textures/" + fileName)));
             else
-                id = TextureLoader.getTexture(ext, new FileInputStream(new File("./res/textures/" + fileName))).getTextureID();
+                id = ImageUtil.getTexture(ImageIO.read(new File("./res/textures/" + fileName)));
 
             return id;
         } catch (IOException e) {
