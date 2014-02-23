@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/teamfield3/jttd.png?label=ready)](https://waffle.io/teamfield3/jttd)
 jTTD
 ====
 
