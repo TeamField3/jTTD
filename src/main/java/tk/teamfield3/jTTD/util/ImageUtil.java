@@ -8,7 +8,7 @@ import static org.lwjgl.opengl.GL12.*;
 
 public class ImageUtil {
 
-    public static int getTexture(BufferedImage image) {
+    public static int getTextureID(BufferedImage image) {
         int[] pixels = new int[image.getWidth() * image.getHeight()];
         image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
 
