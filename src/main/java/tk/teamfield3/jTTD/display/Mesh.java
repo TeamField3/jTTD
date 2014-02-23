@@ -4,9 +4,7 @@ import tk.teamfield3.jTTD.util.BufferUtil;
 import tk.teamfield3.jTTD.util.math.Vector2f;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -19,9 +17,14 @@ public class Mesh {
     private int ibo;
     private int size;
 
-    public Mesh(String fileName) {
+    public Mesh(String filePath) {
         initMeshData();
-        loadMesh(fileName);
+        loadMesh(filePath);
+    }
+
+    public Mesh(String fileName, Object classInJar) {
+        initMeshData();
+        loadMesh(fileName, classInJar);
     }
 
     public Mesh(Vertex[] vertices, int[] indices) {
@@ -91,7 +94,28 @@ public class Mesh {
             vertices[i].setNormal(vertices[i].getNormal().getNormalized());
     }
 
-    private Mesh loadMesh(String fileName) {
+    private Mesh loadMesh(String filePath) {
+        String[] splitArray = filePath.split("\\.");
+        String ext = splitArray[splitArray.length - 1];
+
+        if (!ext.equals("obj")) {
+            System.err.println("Error: only obj files are supported");
+            new Exception().printStackTrace();
+            System.exit(1);
+        }
+
+        try {
+            BufferedReader meshReader = new BufferedReader(new FileReader(new File(filePath)));
+            getMesh(meshReader);
+            return this;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private Mesh loadMesh(String fileName, Object classInJar) {
         String[] splitArray = fileName.split("\\.");
         String ext = splitArray[splitArray.length - 1];
 
@@ -101,14 +125,20 @@ public class Mesh {
             System.exit(1);
         }
 
+        InputStream stream = classInJar.getClass().getResourceAsStream(fileName);
+
+        BufferedReader meshReader = new BufferedReader(new InputStreamReader(stream));
+        getMesh(meshReader);
+
+        return this;
+    }
+
+    private void getMesh(BufferedReader meshReader) {
         ArrayList<Vector3f> vertexCoords = new ArrayList<Vector3f>();
         ArrayList<Integer> indices = new ArrayList<Integer>();
         ArrayList<Vector2f> textureCoords = new ArrayList<Vector2f>();
 
-        BufferedReader meshReader = null;
-
         try {
-            meshReader = new BufferedReader(new FileReader("./res/models/" + fileName));
             String line;
 
             while ((line = meshReader.readLine()) != null) {
@@ -171,8 +201,7 @@ public class Mesh {
             e.printStackTrace();
             System.exit(1);
         }
-
-        return null;
     }
+
 
 }

@@ -8,7 +8,7 @@ import tk.teamfield3.jTTD.util.math.Vector3f;
 public class TestCube extends TestComponent {
 
     public TestCube(Vector3f position) {
-        super(new Mesh("cube.obj"), new Material(new Texture("test2.png", false)), position);
+        super(new Mesh("./res/models/cube.obj"), new Material(new Texture("./res/textures/test.png")), position);
     }
 
     int i = 0;

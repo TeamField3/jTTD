@@ -6,6 +6,7 @@ import tk.teamfield3.jTTD.display.shader.Shader;
 import tk.teamfield3.jTTD.util.math.Vector3f;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL32.*;
 
 public class GameRenderer {
 
@@ -21,8 +22,7 @@ public class GameRenderer {
         glEnable(GL_CULL_FACE);
         glEnable(GL_DEPTH_TEST);
 
-        // Only avalible on OpenGL 3.2
-        // glEnable(GL_DEPTH_CLAMP);
+        glEnable(GL_DEPTH_CLAMP);
 
         glEnable(GL_TEXTURE_2D);
     }

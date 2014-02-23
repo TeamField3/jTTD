@@ -13,7 +13,7 @@ public class Texture {
 
     private int id;
 
-    public Texture(String fileName, Class<Object> classInJar) {
+    public Texture(String fileName, Class<?> classInJar) {
         this(loadTexture(fileName, classInJar));
     }
 
@@ -33,12 +33,12 @@ public class Texture {
         return id;
     }
 
-    private static int loadTexture(String fileName, Class<Object> classInJar) {
+    private static int loadTexture(String fileName, Object classInJar) {
         String[] splitArray = fileName.split("\\.");
         String ext = splitArray[splitArray.length - 1];
 
         try {
-            return ImageUtil.getTextureID(ImageIO.read(classInJar.getResourceAsStream("/textures/" + fileName)));
+            return ImageUtil.getTextureID(ImageIO.read(classInJar.getClass().getResourceAsStream("/textures/" + fileName)));
         } catch (IOException e) {
             e.printStackTrace();
         }

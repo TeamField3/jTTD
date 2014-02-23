@@ -23,6 +23,7 @@ public abstract class Camera {
         this.forward = forward.getNormalized();
         this.up = up.getNormalized();
         this.projection = new Matrix4f().initPerspective(fov, aspect, zNear, zFar);
+        System.out.println(fov + ", " + aspect + ", " + zNear + ", " + zFar);
     }
 
     public Matrix4f getViewProjection() {

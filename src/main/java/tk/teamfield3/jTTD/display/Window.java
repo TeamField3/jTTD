@@ -100,7 +100,7 @@ public class Window {
         if (displayMode.getWidth() != Display.getWidth() || displayMode.getHeight() != Display.getHeight()) {
             displayMode = new DisplayMode(Display.getWidth(), Display.getHeight());
             // TODO: MAKE FOV, zNear, zFar CHANGABLE
-            GameEngine.getInstance().getRenderer().getCamera().setParameters(70f, Display.getWidth() / Display.getHeight(), 0.1f, 1000);
+            GameEngine.getInstance().getRenderer().getCamera().setParameters(70f, getWidth() / getHeight(), 0.1f, 1000);
             GameEngine.getInstance().getRenderer().getCamera().updateCenterPosition();
             glViewport(0, 0, displayMode.getWidth(), displayMode.getHeight());
         }

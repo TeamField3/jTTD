@@ -8,7 +8,7 @@ import tk.teamfield3.jTTD.util.math.Vector3f;
 public class TestFloor extends TestComponent {
 
     public TestFloor(Mesh mesh) {
-        super(mesh, new Material(new Texture("test.png", false), new Vector3f(1, 1, 1), 1, 8), new Vector3f(0, 0, 0));
+        super(mesh, new Material(new Texture("./res/textures/test.png"), new Vector3f(1, 1, 1), 1, 8), new Vector3f(0, 0, 0));
     }
 
     @Override
