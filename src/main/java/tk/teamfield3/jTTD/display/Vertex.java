@@ -19,6 +19,10 @@ public class Vertex {
         this(pos, texCoord, new Vector3f(0, 0, 0));
     }
 
+    public Vertex(Vector3f pos, Vector3f normal) {
+        this(pos, new Vector2f(0, 0), normal);
+    }
+
     public Vertex(Vector3f pos, Vector2f texCoord, Vector3f normal) {
         this.pos = pos;
         this.texCoord = texCoord;
