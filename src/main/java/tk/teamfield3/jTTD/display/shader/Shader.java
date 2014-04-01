@@ -10,6 +10,8 @@ import tk.teamfield3.jTTD.util.math.Vector3f;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 
 import static org.lwjgl.opengl.GL20.*;
@@ -17,8 +19,8 @@ import static org.lwjgl.opengl.GL20.*;
 public class Shader {
 
     private GameRenderer renderer;
-    private int program;
     private HashMap<String, Integer> uniforms;
+    protected int program;
 
     public Shader() {
         program = glCreateProgram();
@@ -74,6 +76,17 @@ public class Shader {
 
     public void addFragmentShader(String text) {
         addProgram(text, GL_FRAGMENT_SHADER);
+    }
+
+    public void bindAttribLocation(int program, int index, String name) {
+        byte[] bytes = name.getBytes(Charset.forName("UTF-8"));
+        ByteBuffer buffer = BufferUtil.createByteBuffer(bytes.length + 1);
+        for (byte b : bytes) {
+            buffer.put(b);
+        }
+        byte n = 0;
+        buffer.put(n);
+        glBindAttribLocation(program, index, buffer);
     }
 
     public void compileShader() {

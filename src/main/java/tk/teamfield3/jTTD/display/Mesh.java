@@ -22,6 +22,12 @@ public class Mesh {
         loadMesh(filePath);
     }
 
+    public Mesh(Vertex[] vertices, int[] indices) {
+        initMeshData();
+        // calcNormals(vertices, indices);
+        addVertices(vertices, indices);
+    }
+
     private void initMeshData() {
         vbo = glGenBuffers();
         ibo = glGenBuffers();
@@ -98,7 +104,8 @@ public class Mesh {
     private void loadOBJ(BufferedReader reader) {
         try {
             ArrayList<Vector3f> vertexCoords = new ArrayList<Vector3f>();
-            ArrayList<Integer> indices = new ArrayList<Integer>();
+            ArrayList<Integer> index = new ArrayList<Integer>();
+            ArrayList<Integer> indicesTexture = new ArrayList<Integer>();
             ArrayList<Vector2f> textureCoords = new ArrayList<Vector2f>();
             ArrayList<Vector3f> vertexNorms = new ArrayList<Vector3f>();
             String line;
@@ -125,14 +132,24 @@ public class Mesh {
                 }
                 //Indicates a face
                 else if (line.startsWith("f ")) {
-                    indices.add(Integer.parseInt(line.split(" ")[1].split("/")[0]) - 1);
-                    indices.add(Integer.parseInt(line.split(" ")[2].split("/")[0]) - 1);
-                    indices.add(Integer.parseInt(line.split(" ")[3].split("/")[0]) - 1);
+                    // Triangulated
+                    index.add(Integer.parseInt(line.split(" ")[1].split("/")[0]) - 1);
+                    index.add(Integer.parseInt(line.split(" ")[2].split("/")[0]) - 1);
+                    index.add(Integer.parseInt(line.split(" ")[3].split("/")[0]) - 1);
 
+                    indicesTexture.add(Integer.parseInt(line.split(" ")[1].split("/")[1]) - 1);
+                    indicesTexture.add(Integer.parseInt(line.split(" ")[2].split("/")[1]) - 1);
+                    indicesTexture.add(Integer.parseInt(line.split(" ")[3].split("/")[1]) - 1);
+
+                    // For quads
                     if (line.split(" ").length > 4) {
-                        indices.add(Integer.parseInt(line.split(" ")[1].split("/")[0]) - 1);
-                        indices.add(Integer.parseInt(line.split(" ")[3].split("/")[0]) - 1);
-                        indices.add(Integer.parseInt(line.split(" ")[4].split("/")[0]) - 1);
+                        index.add(Integer.parseInt(line.split(" ")[1].split("/")[0]) - 1);
+                        index.add(Integer.parseInt(line.split(" ")[3].split("/")[0]) - 1);
+                        index.add(Integer.parseInt(line.split(" ")[4].split("/")[0]) - 1);
+
+                        indicesTexture.add(Integer.parseInt(line.split(" ")[1].split("/")[1]) - 1);
+                        indicesTexture.add(Integer.parseInt(line.split(" ")[3].split("/")[1]) - 1);
+                        indicesTexture.add(Integer.parseInt(line.split(" ")[4].split("/")[1]) - 1);
                     }
                 }
             }
@@ -151,18 +168,37 @@ public class Mesh {
                 Vertex[] vertexData = new Vertex[vertices.size()];
                 vertices.toArray(vertexData);
 
-                Integer[] indexData = new Integer[indices.size()];
-                indices.toArray(indexData);
+                Integer[] indexData = new Integer[index.size()];
+                index.toArray(indexData);
 
                 addVertices(vertexData, BufferUtil.toIntArray(indexData));
             } else if (textureCoords.size() == vertexCoords.size()) {
                 ArrayList<Vertex> vertices = new ArrayList<Vertex>();
-                for (Vector3f vertex : vertexCoords) {
-                    for (Vector2f texture : textureCoords) {
-                        vertices.add(new Vertex(vertex, texture));
-                    }
+                ArrayList<Integer> indices = new ArrayList<Integer>();
+                for (int i = 0; i < vertexCoords.size(); i++) {
+                    vertices.add(new Vertex(vertexCoords.get(i), textureCoords.get(i)));
                 }
 
+                for (Integer anIndicesTexture : indicesTexture)
+                    indices.add(anIndicesTexture);
+
+                for (Integer i : index)
+                    indices.add(i);
+
+                Vertex[] vertexData = new Vertex[vertices.size()];
+                vertices.toArray(vertexData);
+
+                Integer[] indexData = new Integer[indices.size()];
+                indices.toArray(indexData);
+
+                addVertices(vertexData, BufferUtil.toIntArray(indexData));
+            } else if (textureCoords.size() != 0 && indicesTexture.size() != 0) {
+                ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+                ArrayList<Integer> indices = new ArrayList<Integer>();
+                for (int i = 0; i < indicesTexture.size(); i++) {
+                    indices.add(i);
+                    vertices.add(new Vertex(vertexCoords.get(index.get(i)), textureCoords.get(indicesTexture.get(i))));
+                }
                 Vertex[] vertexData = new Vertex[vertices.size()];
                 vertices.toArray(vertexData);
 
@@ -181,8 +217,8 @@ public class Mesh {
                 Vertex[] vertexData = new Vertex[vertices.size()];
                 vertices.toArray(vertexData);
 
-                Integer[] indexData = new Integer[indices.size()];
-                indices.toArray(indexData);
+                Integer[] indexData = new Integer[index.size()];
+                index.toArray(indexData);
 
                 addVertices(vertexData, BufferUtil.toIntArray(indexData));
             } else {
@@ -194,8 +230,8 @@ public class Mesh {
                 Vertex[] vertexData = new Vertex[vertices.size()];
                 vertices.toArray(vertexData);
 
-                Integer[] indexData = new Integer[indices.size()];
-                indices.toArray(indexData);
+                Integer[] indexData = new Integer[index.size()];
+                index.toArray(indexData);
 
                 addVertices(vertexData, BufferUtil.toIntArray(indexData));
             }
